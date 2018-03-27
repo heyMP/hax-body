@@ -41,20 +41,30 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         --hax-accent: #34e79a;
       }
       #dialog {
+        display: flex;
+        flex-direction: column;
         position: fixed;
         top: 0;
         right: 0;
         bottom: 0;
         left: 0;
-        margin: 68px;
         overflow: auto;
-        border-bottom-left-radius: 16px;
-        border-bottom-right-radius: 16px;
+        margin: 65px 0 0 0;
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+      }
+
+      @media screen and (min-width: 500px) {
+        #dialog {
+          margin: 65px 6vw 0vw 6vw;
+          bottom: auto;
+        }
       }
       #dialogcontent {
         margin-top: 0;
         padding: 0;
         overflow: scroll;
+        flex: 1 1 auto;
       }
       .preview-buttons {
         position: absolute;
@@ -213,25 +223,11 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         height: 32px;
         text-align: center;
       }
-      #newassetconfigure {
-        bottom: 0;
-        left: 0;
-        right: 0;
-        position: absolute;
-        width: 100%;
-        margin: 0;
-        padding: 16px;
-        background-color: #e2e2e2;
-        -webkit-box-shadow: 0 -1px 4px 0px #222222;
-        box-shadow: 0 -1px 4px 0px #222222;
+
+      #dialogFooter paper-button {
       }
+
       @media screen and (max-width: 550px) {
-        #dialog {
-          margin: 0;
-          overflow: auto;
-          border-bottom-left-radius: 0px;
-          border-bottom-right-radius: 0px;
-        }
         .hide-on-mobile {
           opacity: 0;
           visibility: hidden;
@@ -266,7 +262,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         }
       }
     </style>
-    <paper-dialog id="dialog" entry-animation="slide-from-top-animation" exit-animation="slide-up-animation" with-backdrop>
+    <paper-dialog id="dialog" with-backdrop on-opened-changed="__dialogOpenChanged">
       <div id="dialogheader" class="grey darken-3 grey-text text-lighten-3">
         <h2 class="grey-text text-lighten-3">[[managerTitle]]</h2>
         <div class="step-toggle-wrapper">
@@ -319,6 +315,9 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
             </div>
           </div>
         </iron-pages>
+      </div>
+      <div id="dialogFooter">
+        <paper-button dialog-dismiss>Cancel</paper-button>
       </div>
     </paper-dialog>
   </template>
@@ -647,7 +646,19 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         return path.split('.').reduce(function(prev, curr) {
             return prev ? prev[curr] : null
         }, obj || self);
-      }
+      },
+      __dialogOpenChanged: function (e, detail) {
+        const opened = detail.value;
+        if (opened) {
+          this.$.dialog.animate([
+            { transform: 'translateY(-100%)' },
+            { transform: 'translateY(0)' },
+          ], {
+            duration: 400, //milliseconds
+            easing: 'ease-in-out', //'linear', a bezier curve, etc.
+          });
+        }
+      },
     });
   </script>
 </dom-module>
