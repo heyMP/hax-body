@@ -41,18 +41,23 @@
       #select {
         position: relative;
         z-index: 10;
-        width: 13em;
+        max-width: 13em;
+        width: 100%;
         transition: all .3s ease-in-out;
       }
 
       #select.iron-selected {
-        width: 30em;
+        max-width: 30em;
       }
 
+      #select hax-editor-select-section {
+        width: 100%;
+      }
       #create {
         position: relative;
         z-index: 9;
-        width: 0;
+        overflow: hidden;
+        transform: translateX(-100%);
       }
 
       #create.iron-selected {
@@ -63,17 +68,15 @@
       #configure {
         position: relative;
         z-index: 9;
-        opacity: 0;
+        overflow: hidden;
       }
 
       @keyframes openSection {
         0% {
-          width: 0;
           transform: translateX(-100%);
         }
         100% {
           transform: translateX(0);
-          width: 100%;
         }
       }
     </style>
