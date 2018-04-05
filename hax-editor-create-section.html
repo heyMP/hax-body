@@ -1,0 +1,68 @@
+<link rel="import" href="hax-editor-upload.html">
+<link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="hax-tabs.html">
+<link rel="import" href="hax-tab.html">
+<link rel="import" href="hax-app-browser.html">
+
+<dom-module id="hax-editor-create-section">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+      }
+
+      #upload,
+      #select {
+        width: 100%;
+      }
+
+      @media screen and (min-width: 600px) {
+        :host {
+          flex-wrap: nowrap;
+        }
+
+        #upload {
+          flex: 1 1 auto;
+          max-width: 20em;
+        }
+
+        #select {
+          flex: 1 1 auto;
+        }
+      }
+    </style>
+
+    <hax-editor-upload id="upload"></hax-editor-upload>
+
+    <div id="select">
+      <hax-tabs selected="{{selected}}" attr-for-selected="name">
+        <hax-tab name="content">Content API</hax-tab>
+        <hax-tab name="gizmo">Gizmos</hax-tab>
+      </hax-tabs>
+
+      <iron-pages selected="{{selected}}" attr-for-selected="name">
+        <section name="content">
+          <hax-app-browser id="appbrowser">
+            <slot></slot>
+          </hax-app-browser></section>
+        <section name="gizmo">Gizmos</section>
+      </iron-pages>
+    </div>
+
+
+  </template>
+  <script>
+    Polymer({
+      is: 'hax-editor-create-section',
+
+      properties: {
+        selected: {
+          type: String,
+          value: 'content'
+        }
+      }
+    });
+  </script>
+</dom-module>

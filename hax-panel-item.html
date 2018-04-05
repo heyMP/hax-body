@@ -207,6 +207,16 @@ A single button in the hax panel for consistency.
           type: Boolean,
           value: false,
         },
+        /**
+         * State off being "on". Has different connotations
+         * for different settings.  For instance, if the button is a 'parent'
+         * then the icon will show as expanded
+         */
+        open: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true,
+        },
       },
       /**
        * Fire an event that includes the eventName of what was just pressed.
