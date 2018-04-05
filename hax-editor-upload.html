@@ -6,17 +6,33 @@
   <template>
     <style>
       :host {
-        display: block;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
         font-size: .8em;
         padding: 1em;
       }
 
       :host > * + :host > * {
+        flex: 1 1 auto;
         margin-top: .5em;
       }
 
+      #title {
+        text-align: center;
+      }
+
       #dropzone {
+        display: flex;
         cursor: pointer;
+        flex: 1 2 auto;
+      }
+
+      vaadin-upload {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
       }
 
       /* hide the button */
@@ -37,6 +53,8 @@
         color:grey;
       }
     </style>
+
+    <h2 id="title">Upload</h2>
 
     <div id="dropzone">
       <vaadin-upload tabindex="0" form-data-name="file-upload" id="fileupload"></vaadin-upload>
