@@ -1,5 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../app-route/app-route.html">
+<link rel="import" href="../app-route/app-location.html">
 <link rel="import" href="hax-editor-upload.html">
 <link rel="import" href="hax-editor-select-section.html">
 <link rel="import" href="hax-editor-create-section.html">
@@ -10,15 +12,68 @@
   <template>
     <style>
       :host {
-        display: block;
+        display: inline-flex;
+        background: #333333;
+        width: auto;
+      }
+
+      iron-pages {
+        display: flex;
+      }
+
+      /* override the default iron-pages css behavior */
+      iron-pages > :not(slot):not(.iron-selected) {
+        display: block !important;
+        width: 0;
+      }
+
+      iron-pages > .iron-selected:not(slot) {
+        flex: 1 1 auto;
       }
 
       #select {
-        max-width: 30em;
+        width: 15em;
+        transition: all .3s ease-in-out;
+      }
+
+      #select.iron-selected {
+        width: 30em;
+      }
+
+      #create {
+        opacity: 0;
+      }
+
+      #create.iron-selected {
+        animation: openSection .8s forwards;
+      }
+
+      #configure {
+        opacity: 0;
+      }
+
+      @keyframes openSection {
+        0% {
+          width: 0;
+          opacity: 0;
+        }
+        50% {
+          opacity: 0;
+        }
+        70% {
+          width: 100%;
+        }
+        100% {
+          opacity: 1;
+          width: 100%;
+        }
       }
     </style>
 
-    <iron-pages selected="{{selected}}" attr-for-selected="id">
+    <app-location route="{{__route}}"></app-location>
+    <app-route id="appRoute" route="{{__route}}"></app-route>
+
+    <iron-pages id="pages" selected="{{selected}}" attr-for-selected="id">
       <section id="select">
         <hax-editor-select-section></hax-editor-select-section>
       </section>
@@ -39,22 +94,103 @@
       is: 'hax-editor-ui',
       properties: {
         /**
-         * The name of the section that is.
+         * The name of the section that is. Possible Options are
+         * 'select', 'create', 'configure'.
          */
         selected: {
           type: String,
           value: 'select'
         },
+        /**
+         * Query Param name,
+         */
+        selectedStateName: {
+          type: String,
+          value: 'hax-editor-selected'
+        },
+        /**
+         * Specify what the default selected state
+         * should be.
+         */
+        selectedStateDefault: {
+          type: String,
+          value: 'select',
+        },
+        __route: {
+          type: Object
+        },
       },
 
-      // __selectedList: 
+      observers: [
+        '__routeParamsChanged(__route.__queryParams)',
+        '__selectedChanged(selected)',
+      ],
 
       listeners: {
-        'tap': '__click'
+        'hax-item-selected': '__itemSelected',
       },
 
-      __click: function (e) {
-        console.log(e);
+      /**
+       * Update the Selected state.
+       */
+      updateSelected: function (selected) {
+        const appRoute = this.$.appRoute;
+        // create immutable queryParams object.
+        const queryParams = Object.assign({}, appRoute.queryParams);
+        // update the routing and the routing will trigger state change.
+        if (selected && selected !== '') {
+          var newParams = Object.assign(queryParams, { [this.selectedStateName]: selected });
+          this.set('__route.__queryParams', newParams);
+        }
+        else {
+          // if selection was ommitted then we are going to remove the query params.
+          delete queryParams[this.selectedStateName];
+          this.set('__route.__queryParams', queryParams);
+        }
+      },
+
+      /**
+       * When the route params change, look to see
+       * if we should update the selected state.
+       */
+      __routeParamsChanged: function (params) {
+        if (params) {
+          const selected = params[this.selectedStateName];
+          if (selected) {
+            this.selected = selected;
+          }
+          else {
+            this.selected = this.selectedStateDefault;
+          }
+        }
+      },
+
+      /**
+       * When the user selects an item from the
+       * hax panel then we are going to set update
+       * the state.
+       */
+      __itemSelected: function (e, detail) {
+        const eName = detail.eventName
+        if (eName) {
+          switch (eName) {
+            // if the user selected custom media then we are going
+            // to change to create state
+            case 'custom-media':
+              this.updateSelected('create');
+              break;
+
+            default:
+              this.updateSelected('');
+              break;
+          }
+        }
+      },
+
+      /**
+       * When the selected state changes then we need to do some CSS'ing
+       */
+      __selectedChanged: function (selected) {
       }
     });
   </script>
