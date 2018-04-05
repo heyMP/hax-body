@@ -13,23 +13,25 @@
     <style>
       :host {
         display: flex;
-        width: auto;
+        width: 100%;
         overflow: hidden;
       }
 
       iron-pages {
         display: flex;
+        width: 100%;
       }
 
       /* override the default iron-pages css behavior */
 
       iron-pages> :not(slot):not(.iron-selected) {
-        display: block !important;
+        display: flex !important;
         width: 0;
       }
 
       iron-pages> :not(slot) {
         background: #333333;
+        display: flex;
       }
 
       iron-pages>.iron-selected:not(slot) {
@@ -39,7 +41,7 @@
       #select {
         position: relative;
         z-index: 10;
-        width: 15em;
+        width: 13em;
         transition: all .3s ease-in-out;
       }
 
