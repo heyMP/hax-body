@@ -1,0 +1,38 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="hax-panel-item.html">
+
+<dom-module id="hax-editor-select-section">
+  <template>
+    <style>
+      :host {
+        display: block;
+        @apply --editor-select;
+      }
+
+      #panel {
+        display: block;
+      }
+    </style>
+
+    <div id="panel">
+      <hax-panel-item icon="device:graphic-eq" icon-class="amber-text text-darken-1" label="Custom Media" parent event-name="hax-manager-open"
+        voice-command="insert gizmo"></hax-panel-item>
+      <hax-panel-item icon="editor:text-fields" label="Text" event-name="text" voice-command="insert text"></hax-panel-item>
+      <hax-panel-item icon="editor:title" label="Heading" event-name="header" voice-command="insert heading"></hax-panel-item>
+      <hax-panel-item icon="image:panorama" icon-class="amber-text text-darken-1" label="Image" event-name="image" voice-command="insert image"></hax-panel-item>
+      <hax-panel-item icon="link" icon-class="blue-text text-darken-1" label="Iframe" event-name="iframe" voice-command="insert i frame"></hax-panel-item>
+      <hax-panel-item icon="editor:space-bar" icon-class="green-text text-darken-1" label="Divider" event-name="divider" voice-command="insert divider"></hax-panel-item>
+      <slot></slot>
+      <hax-panel-item disabled icon="view-quilt" icon-class="red-text text-darken-1" label="Block layout" event-name="layout" voice-command="insert block"></hax-panel-item>
+      <hax-panel-item disabled icon="view-agenda" icon-class="orange-text text-darken-1" label="Layout stack" event-name="layout"
+        voice-command="insert stack"></hax-panel-item>
+      <hax-panel-item icon="cancel" label="Cancel"></hax-panel-item>
+    </div>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'hax-editor-select-section'
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,61 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="hax-editor-upload.html">
+<link rel="import" href="hax-editor-select-section.html">
+<link rel="import" href="hax-editor-create-section.html">
+<link rel="import" href="hax-editor-configure-section.html">
+
+
+<dom-module id="hax-editor-ui">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      #select {
+        max-width: 30em;
+      }
+    </style>
+
+    <iron-pages selected="{{selected}}" attr-for-selected="id">
+      <section id="select">
+        <hax-editor-select-section></hax-editor-select-section>
+      </section>
+      <section id="create">
+        <hax-editor-create-section></hax-editor-create-section>
+      </section>
+      <section id="configure">
+        <hax-editor-create-section></hax-editor-create-section>
+      </section>
+    </iron-pages>
+
+  </template>
+  <script>
+    /**
+     * @demo demo/hax-editor-ui.html
+     */
+    Polymer({
+      is: 'hax-editor-ui',
+      properties: {
+        /**
+         * The name of the section that is.
+         */
+        selected: {
+          type: String,
+          value: 'select'
+        },
+      },
+
+      // __selectedList: 
+
+      listeners: {
+        'tap': '__click'
+      },
+
+      __click: function (e) {
+        console.log(e);
+      }
+    });
+  </script>
+</dom-module>
