@@ -12,21 +12,36 @@
       #panel {
         display: block;
       }
+      .group-heading {
+          border-top: 2px solid #4b4b4b;
+          color: #aaa;
+          text-transform:uppercase;
+          padding:0.5em;
+          text-align: center;
+          background:transparent;
+          font-weight:100;
+        }
     </style>
 
     <div id="panel">
-      <hax-panel-item icon="device:graphic-eq" icon-class="amber-text text-darken-1" label="Custom Media" parent event-name="custom-media"
-        voice-command="insert gizmo"></hax-panel-item>
+     
+      <div class="group-heading">Text / Layout</div>
       <hax-panel-item icon="editor:text-fields" label="Text" event-name="text" voice-command="insert text"></hax-panel-item>
       <hax-panel-item icon="editor:title" label="Heading" event-name="header" voice-command="insert heading"></hax-panel-item>
-      <hax-panel-item icon="image:panorama" icon-class="amber-text text-darken-1" label="Image" event-name="image" voice-command="insert image"></hax-panel-item>
-      <hax-panel-item icon="link" icon-class="blue-text text-darken-1" label="Iframe" event-name="iframe" voice-command="insert i frame"></hax-panel-item>
-      <hax-panel-item icon="editor:space-bar" icon-class="green-text text-darken-1" label="Divider" event-name="divider" voice-command="insert divider"></hax-panel-item>
-      <slot></slot>
       <hax-panel-item disabled icon="view-quilt" icon-class="red-text text-darken-1" label="Block layout" event-name="layout" voice-command="insert block"></hax-panel-item>
       <hax-panel-item disabled icon="view-agenda" icon-class="orange-text text-darken-1" label="Layout stack" event-name="layout"
         voice-command="insert stack"></hax-panel-item>
-      <hax-panel-item icon="cancel" label="Cancel"></hax-panel-item>
+      <hax-panel-item icon="editor:space-bar" icon-class="green-text text-darken-1" label="Divider" event-name="divider" voice-command="insert divider"></hax-panel-item>
+      <slot></slot>
+      <div class="group-heading">Media</div>
+      <hax-panel-item icon="image:panorama" icon-class="amber-text text-darken-1" label="Image" event-name="image" voice-command="insert image"></hax-panel-item>
+      <div class="group-heading">Web</div>
+      <hax-panel-item icon="device:graphic-eq" icon-class="amber-text text-darken-1" label="API Content" parent event-name="custom-media" voice-command="insert gizmo"></hax-panel-item>
+      <hax-panel-item icon="link" icon-class="blue-text text-darken-1" label="Iframe" event-name="iframe" voice-command="insert i frame"></hax-panel-item>
+
+      <div class="group-heading">Learning</div>
+      <hax-panel-item icon="link" icon-class="blue-text text-darken-1" label="H5P" event-name="H5P" voice-command="insert i h5p"></hax-panel-item>
+    
     </div>
 
   </template>
