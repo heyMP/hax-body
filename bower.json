@@ -64,7 +64,7 @@
   },
   "resolutions": {
     "webcomponentsjs": "^0.7.24",
-    "neon-animation": "1 - 2",
+    "neon-animation": "^2.2.1",
     "materializecss-styles": "^1.1.0",
     "paper-spinner": "^2.0.0",
     "paper-tooltip": "^2.0.0",
