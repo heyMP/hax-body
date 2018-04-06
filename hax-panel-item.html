@@ -90,14 +90,16 @@ A single button in the hax panel for consistency.
         display: unset;
         text-align: unset;
         margin-right: unset;
+        margin-left:0.75em;
         display: block;
       }
       paper-button .button-inner {
-        padding: 0;
-        display: grid;
+        padding: 0 0 0 0.75em;
+        display: flex;
         align-items: center;
         width: 100%;
-        justify-items: center;
+        justify-items: left;
+        justify-content: flex-start;
         grid-template-columns: 40px auto 40px;
         grid-template-areas:
           'margin main sidebar'
@@ -112,7 +114,7 @@ A single button in the hax panel for consistency.
       #parent-arrow {
         grid-area: sidebar;
         transform: rotate(-90deg);
-        margin-left: -40px;
+        margin-left: 0;
       }
       paper-button iron-icon {
         height: 32px;
