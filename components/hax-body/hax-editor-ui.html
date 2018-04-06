@@ -1,0 +1,208 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../app-route/app-route.html">
+<link rel="import" href="../app-route/app-location.html">
+<link rel="import" href="hax-editor-upload.html">
+<link rel="import" href="hax-editor-select-section.html">
+<link rel="import" href="hax-editor-create-section.html">
+<link rel="import" href="hax-editor-configure-section.html">
+
+
+<dom-module id="hax-editor-ui">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        width: 100%;
+        overflow: hidden;
+      }
+
+      iron-pages {
+        display: flex;
+        width: 100%;
+      }
+
+      /* override the default iron-pages css behavior */
+
+      iron-pages> :not(slot):not(.iron-selected) {
+        display: flex !important;
+        width: 0;
+      }
+
+      iron-pages> :not(slot) {
+        background: #333333;
+        display: flex;
+      }
+
+      iron-pages>.iron-selected:not(slot) {
+        flex: 1 1 auto;
+      }
+
+      #select {
+        position: relative;
+        z-index: 10;
+        max-width: 13em;
+        width: 100%;
+        transition: all .3s ease-in-out;
+      }
+
+      #select.iron-selected {
+        max-width: 30em;
+      }
+
+      #select hax-editor-select-section {
+        width: 100%;
+      }
+      #create {
+        position: relative;
+        z-index: 9;
+        overflow: hidden;
+        transform: translateX(-100%);
+      }
+
+      #create.iron-selected {
+        animation: openSection .8s forwards;
+        animation-delay: .1s;
+      }
+
+      #configure {
+        position: relative;
+        z-index: 9;
+        overflow: hidden;
+      }
+
+      @keyframes openSection {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+    </style>
+
+    <app-location route="{{__route}}"></app-location>
+    <app-route id="appRoute" route="{{__route}}"></app-route>
+
+    <iron-pages id="pages" selected="{{selected}}" attr-for-selected="id">
+      <section id="select">
+        <hax-editor-select-section></hax-editor-select-section>
+      </section>
+      <section id="create">
+        <hax-editor-create-section></hax-editor-create-section>
+      </section>
+      <section id="configure">
+        <hax-editor-create-section></hax-editor-create-section>
+      </section>
+    </iron-pages>
+
+  </template>
+  <script>
+    /**
+     * @demo demo/hax-editor-ui.html
+     */
+    Polymer({
+      is: 'hax-editor-ui',
+      properties: {
+        /**
+         * The name of the section that is. Possible Options are
+         * 'select', 'create', 'configure'.
+         */
+        selected: {
+          type: String,
+          value: 'select'
+        },
+        /**
+         * Query Param name,
+         */
+        selectedStateName: {
+          type: String,
+          value: 'hax-editor-selected'
+        },
+        /**
+         * Specify what the default selected state
+         * should be.
+         */
+        selectedStateDefault: {
+          type: String,
+          value: 'select',
+        },
+        __route: {
+          type: Object
+        },
+      },
+
+      observers: [
+        '__routeParamsChanged(__route.__queryParams)',
+        '__selectedChanged(selected)',
+      ],
+
+      listeners: {
+        'hax-item-selected': '__itemSelected',
+      },
+
+      /**
+       * Update the Selected state.
+       */
+      updateSelected: function (selected) {
+        const appRoute = this.$.appRoute;
+        // create immutable queryParams object.
+        const queryParams = Object.assign({}, appRoute.queryParams);
+        // update the routing and the routing will trigger state change.
+        if (selected && selected !== '') {
+          var newParams = Object.assign(queryParams, { [this.selectedStateName]: selected });
+          this.set('__route.__queryParams', newParams);
+        }
+        else {
+          // if selection was ommitted then we are going to remove the query params.
+          delete queryParams[this.selectedStateName];
+          this.set('__route.__queryParams', queryParams);
+        }
+      },
+
+      /**
+       * When the route params change, look to see
+       * if we should update the selected state.
+       */
+      __routeParamsChanged: function (params) {
+        if (params) {
+          const selected = params[this.selectedStateName];
+          if (selected) {
+            this.selected = selected;
+          }
+          else {
+            this.selected = this.selectedStateDefault;
+          }
+        }
+      },
+
+      /**
+       * When the user selects an item from the
+       * hax panel then we are going to set update
+       * the state.
+       */
+      __itemSelected: function (e, detail) {
+        const eName = detail.eventName
+        if (eName) {
+          switch (eName) {
+            // if the user selected custom media then we are going
+            // to change to create state
+            case 'custom-media':
+              this.updateSelected('create');
+              break;
+
+            default:
+              this.updateSelected('');
+              break;
+          }
+        }
+      },
+
+      /**
+       * When the selected state changes then we need to do some CSS'ing
+       */
+      __selectedChanged: function (selected) {
+      }
+    });
+  </script>
+</dom-module>

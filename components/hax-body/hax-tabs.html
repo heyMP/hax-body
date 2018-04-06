@@ -1,0 +1,47 @@
+<link rel="import" href="../paper-tabs/paper-tabs.html">
+<link rel="import" href="../paper-tabs/paper-tab.html">
+
+<dom-module id="hax-tabs">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      paper-tabs {
+        --paper-tabs-selection-bar-color: #34e79a;
+        --paper-tabs: {
+          background: #f8f8f8;
+          @apply --hax-paper-tabs;
+        }
+      }
+
+    </style>
+
+    <paper-tabs id="papertabs" selected="{{selected}}" attr-for-selected="[[attrForSelected]]" selectable="hax-tab">
+      <slot></slot>
+    </paper-tabs>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'hax-tabs',
+
+      properties: {
+        selected: {
+          type: String,
+          notify: true,
+        },
+        attrForSelected: {
+          type: String,
+          value: null,
+        },
+      },
+
+      ready: function () {
+
+      },
+
+    });
+  </script>
+</dom-module>
